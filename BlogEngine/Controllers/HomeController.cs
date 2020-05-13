@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlogEngine.Models;
+using System.Diagnostics.Eventing.Reader;
 
 namespace BlogEngine.Controllers
 {
@@ -26,6 +27,22 @@ namespace BlogEngine.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult Authenticate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Authenticate(AuthenticationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                //TODO: SubscribeUser(model.Email);
+            }
+
+            return View("Index", model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

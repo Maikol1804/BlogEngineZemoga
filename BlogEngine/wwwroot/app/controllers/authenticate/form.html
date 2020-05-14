@@ -1,30 +1,15 @@
-﻿
-@{
-    ViewData["Title"] = "Authenticate";
-}
+﻿<div class="row">
 
-@model AuthenticationViewModel
-
-@*@using (Html.BeginForm("Authenticate", "Home", FormMethod.Post))
-{
-    @Html.TextBoxFor(model => model.Username)
-    @Html.ValidationMessageFor(model => model.Username)
-    <button type="submit">Subscribe</button>
-}*@
-
-<div class="row">
-
-    <div class="col-2">
-
-    </div>
+    <div class="col-2"></div>
 
     <div class="col-8">
         <form class="text-center border border-light p-5" action="#!">
 
             <p class="h4 mb-4">Sign in</p>
 
-            <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username">
-            <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+            <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username" ng-model="User.username">
+
+            <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" ng-model="User.password">
 
             <div class="d-flex justify-content-around">
                 <div>
@@ -47,8 +32,6 @@
         </form>
     </div>
 
-    <div class="col-2">
-
-    </div>
+    <div class="col-2"></div>
 
 </div>

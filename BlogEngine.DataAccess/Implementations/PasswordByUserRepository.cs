@@ -1,4 +1,5 @@
-﻿using BlogEngine.DataAccess.Interfaces;
+﻿using BlogEngine.DataAccess.Context;
+using BlogEngine.DataAccess.Interfaces;
 using BlogEngine.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,16 +11,18 @@ namespace BlogEngine.DataAccess.Implementations
 {
     public class PasswordByUserRepository : IPasswordByUser
     {
-        private readonly BlogEngineContext _context;
+        protected IContext _context;
+        protected DbSet<PasswordByUser> _dbset;
 
-        public PasswordByUserRepository(BlogEngineContext context)
+        public PasswordByUserRepository(IContext context)
         {
             _context = context;
+            _dbset = _context.Set<PasswordByUser>();
         }
 
         public async Task<PasswordByUser> Add(PasswordByUser entity)
         {
-            _context.PasswordByUsers.Add(entity);
+            _dbset.Add(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -27,7 +30,7 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<PasswordByUser> Delete(PasswordByUser entity)
         {
-            _context.PasswordByUsers.Remove(entity);
+            _dbset.Remove(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -35,13 +38,13 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<PasswordByUser> DeleteById(long id)
         {
-            PasswordByUser entity = await _context.PasswordByUsers.FindAsync(id);
+            PasswordByUser entity = await _dbset.FindAsync(id);
             if (entity == null)
             {
                 return null;
             }
 
-            _context.PasswordByUsers.Remove(entity);
+            _dbset.Remove(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -50,7 +53,7 @@ namespace BlogEngine.DataAccess.Implementations
         public async Task<PasswordByUser> Update(PasswordByUser entity)
         {
             entity.UpdateDate = DateTime.Now;
-            _context.PasswordByUsers.Update(entity);
+            _dbset.Update(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -58,17 +61,17 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<List<PasswordByUser>> GetAll()
         {
-            return await _context.PasswordByUsers.Include("User").ToListAsync();
+            return await _dbset.Include("User").ToListAsync();
         }
 
         public async Task<PasswordByUser> GetById(long id)
         {
-            return await _context.PasswordByUsers.FindAsync(id);
+            return await _dbset.FindAsync(id);
         }
 
         public bool Exist(long id)
         {
-            return _context.PasswordByUsers.Any(e => e.Id == id);
+            return _dbset.Any(e => e.Id == id);
         }
     }
 }

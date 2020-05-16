@@ -7,9 +7,8 @@
 
             <p class="h4 mb-4">Sign in</p>
 
-            <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username" ng-model="User.username">
-
-            <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" ng-model="User.password">
+            <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username" ng-model="User.Username" autocomplete="off">
+            <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" ng-model="User.Password" autocomplete="off">
 
             <div class="d-flex justify-content-around">
                 <div>
@@ -30,6 +29,13 @@
             </p>
 
         </form>
+
+        <div class="row" ng-style="{ 'display' : (Message == '') ? 'none' : '' }">
+            <div class="col-md-12">
+                <div ng-class="Alert" role="alert">{{Message}}</div>
+            </div>
+        </div>
+
     </div>
 
     <div class="col-2"></div>

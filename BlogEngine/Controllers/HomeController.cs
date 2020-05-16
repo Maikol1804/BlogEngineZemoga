@@ -1,15 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
-using BlogEngine.Helpers;
+﻿using BlogEngine.Helpers;
+using Autofac;
 
 namespace BlogEngine.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IComponentContext component) : base(component)
         {
-            _logger = logger;
         }
 
     }

@@ -1,1 +1,47 @@
-﻿This is just a test for post
+﻿
+<div class="row">
+
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+
+        <h1 class="my-4">
+            Create
+            <small>Your Post</small>
+        </h1>
+
+        <!-- Blog Post -->
+        <div class="card mb-4">
+            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+            <div class="card-body">
+                <input type="text" id="post-title" class="form-control form-control-lg mb-4" placeholder="Title" ng-model="Post.Title" autocomplete="off">
+                <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="What's on your mind?" rows="3" ng-model="Post.Body"></textarea>
+                <br />
+                <div class="text-right">
+                    <button type="button" class="btn btn-success" ng-click="Methods.SendForApproval()">Send for approval</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-style="{ 'display' : (Message == '') ? 'none' : '' }">
+            <div class="col-md-12">
+                <div ng-class="Alert" role="alert">{{Message}}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+
+        <!-- Side Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">Tip</h5>
+            <div class="card-body">
+                In this section you can create your posts, remember that they go through validation processes. Once approved by the <b>Editor</b>, it will be available in the main section.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

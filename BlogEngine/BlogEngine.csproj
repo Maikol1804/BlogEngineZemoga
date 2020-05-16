@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlogEngine.DataAccess\BlogEngine.DataAccess.csproj" />
+    <ProjectReference Include="..\BlogEngine.Services\BlogEngine.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using BlogEngine.DataAccess.Interfaces;
+﻿using BlogEngine.DataAccess.Context;
+using BlogEngine.DataAccess.Interfaces;
 using BlogEngine.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,16 +11,18 @@ namespace BlogEngine.DataAccess.Implementations
 {
     public class PostStateRepository : IPostState
     {
-        private readonly BlogEngineContext _context;
+        protected IContext _context;
+        protected DbSet<PostState> _dbset;
 
-        public PostStateRepository(BlogEngineContext context)
+        public PostStateRepository(IContext context)
         {
             _context = context;
+            _dbset = _context.Set<PostState>();
         }
 
         public async Task<PostState> Add(PostState entity)
         {
-            _context.PostStates.Add(entity);
+            _dbset.Add(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -27,7 +30,7 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<PostState> Delete(PostState entity)
         {
-            _context.PostStates.Remove(entity);
+            _dbset.Remove(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -35,13 +38,13 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<PostState> DeleteById(long id)
         {
-            PostState entity = await _context.PostStates.FindAsync(id);
+            PostState entity = await _dbset.FindAsync(id);
             if (entity == null)
             {
                 return null;
             }
 
-            _context.PostStates.Remove(entity);
+            _dbset.Remove(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -50,7 +53,7 @@ namespace BlogEngine.DataAccess.Implementations
         public async Task<PostState> Update(PostState entity)
         {
             entity.UpdateDate = DateTime.Now;
-            _context.PostStates.Update(entity);
+            _dbset.Update(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -58,17 +61,17 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<List<PostState>> GetAll()
         {
-            return await _context.PostStates.ToListAsync();
+            return await _dbset.ToListAsync();
         }
 
         public async Task<PostState> GetById(long id)
         {
-            return await _context.PostStates.FindAsync(id);
+            return await _dbset.FindAsync(id);
         }
 
         public bool Exist(long id)
         {
-            return _context.PostStates.Any(e => e.Id == id);
+            return _dbset.Any(e => e.Id == id);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BlogEngine.Transverse.Enumerator
 {
-    public static class Enumerator
+    public static class BasicEnums
     {
 
         public enum State

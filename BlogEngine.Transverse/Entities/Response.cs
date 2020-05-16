@@ -1,4 +1,4 @@
-﻿using static BlogEngine.Transverse.Enumerator.Enumerator;
+﻿using static BlogEngine.Transverse.Enumerator.BasicEnums;
 
 namespace BlogEngine.Transverse.Entities
 {

@@ -1,4 +1,5 @@
-﻿using BlogEngine.DataAccess.Interfaces;
+﻿using BlogEngine.DataAccess.Context;
+using BlogEngine.DataAccess.Interfaces;
 using BlogEngine.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,16 +11,18 @@ namespace BlogEngine.DataAccess.Implementations
 {
     public class RolRepository : IRol
     {
-        private readonly BlogEngineContext _context;
+        protected IContext _context;
+        protected DbSet<Rol> _dbset;
 
-        public RolRepository(BlogEngineContext context)
+        public RolRepository(IContext context)
         {
             _context = context;
+            _dbset = _context.Set<Rol>();
         }
 
         public async Task<Rol> Add(Rol entity)
         {
-            _context.Roles.Add(entity);
+            _dbset.Add(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -27,7 +30,7 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<Rol> Delete(Rol entity)
         {
-            _context.Roles.Remove(entity);
+            _dbset.Remove(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -35,13 +38,13 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<Rol> DeleteById(long id)
         {
-            Rol entity = await _context.Roles.FindAsync(id);
+            Rol entity = await _dbset.FindAsync(id);
             if (entity == null)
             {
                 return null;
             }
 
-            _context.Roles.Remove(entity);
+            _dbset.Remove(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -50,7 +53,7 @@ namespace BlogEngine.DataAccess.Implementations
         public async Task<Rol> Update(Rol entity)
         {
             entity.UpdateDate = DateTime.Now;
-            _context.Roles.Update(entity);
+            _dbset.Update(entity);
             await _context.SaveChangesAsync();
 
             return entity;
@@ -58,17 +61,17 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<List<Rol>> GetAll()
         {
-            return await _context.Roles.ToListAsync();
+            return await _dbset.ToListAsync();
         }
 
         public async Task<Rol> GetById(long id)
         {
-            return await _context.Roles.FindAsync(id);
+            return await _dbset.FindAsync(id);
         }
 
         public bool Exist(long id)
         {
-            return _context.Posts.Any(e => e.Id == id);
+            return _dbset.Any(e => e.Id == id);
         }
     }
 }

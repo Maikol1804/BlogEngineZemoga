@@ -1,9 +1,11 @@
-﻿using BlogEngine.DataAccess.Models;
+﻿using BlogEngine.DataAccess.Context;
+using BlogEngine.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace BlogEngine.DataAccess
 {
-    public class BlogEngineContext : DbContext
+    public class BlogEngineContext : DbContext, IContext
     {
         public BlogEngineContext(DbContextOptions<BlogEngineContext> options) : base(options)
         {
@@ -16,6 +18,11 @@ namespace BlogEngine.DataAccess
         public DbSet<PasswordByUser> PasswordByUsers { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostState> PostStates { get; set; }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return base.SaveChangesAsync();
+        }
 
         #endregion
 

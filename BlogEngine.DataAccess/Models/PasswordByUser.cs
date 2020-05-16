@@ -9,7 +9,7 @@ namespace BlogEngine.DataAccess.Models
     {
         public User User { get; set; }
         public string Hash { get; set; }
-        public string Value { get; set; }
+        public string Salt { get; set; }
 
     }
 }

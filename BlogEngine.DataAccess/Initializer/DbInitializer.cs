@@ -25,7 +25,10 @@ namespace BlogEngine.DataAccess.Initializer
 
         private static void AddTestData(BlogEngineContext context)
         {
-            var rolWriter = new Rol()
+
+            #region Roles
+
+            Rol rolWriter = new Rol()
             {
                 Id = 1,
                 Code = "01",
@@ -33,7 +36,7 @@ namespace BlogEngine.DataAccess.Initializer
             };
             context.Roles.Add(rolWriter);
 
-            var rolEditor = new Rol()
+            Rol rolEditor = new Rol()
             {
                 Id = 2,
                 Code = "02",
@@ -41,7 +44,11 @@ namespace BlogEngine.DataAccess.Initializer
             };
             context.Roles.Add(rolEditor);
 
-            var writer1 = new User
+            #endregion
+
+            #region Writer 1
+
+            User writer1 = new User
             {
                 Id = 1,
                 UserName = "jmendez",
@@ -50,7 +57,21 @@ namespace BlogEngine.DataAccess.Initializer
             };
             context.Users.Add(writer1);
 
-            var writer2 = new User
+            // PASS: Z3moga.852
+            PasswordByUser passwordByUserWriter1 = new PasswordByUser()
+            {
+                Id = 1,
+                User = writer1,
+                Hash = "0f27e5f3b235de0bd3a6e4dc771f6892a5b84410ba7c54973bfb2735a072e303",
+                Salt = "f6Mv"
+            };
+            context.PasswordByUsers.Add(passwordByUserWriter1);
+
+            #endregion
+
+            #region Writer 2
+
+            User writer2 = new User
             {
                 Id = 2,
                 UserName = "mbonilla",
@@ -59,7 +80,21 @@ namespace BlogEngine.DataAccess.Initializer
             };
             context.Users.Add(writer2);
 
-            var editor1 = new User
+            // PASS: Z3moga.852
+            PasswordByUser passwordByUserWriter2 = new PasswordByUser()
+            {
+                Id = 2,
+                User = writer2,
+                Hash = "0f27e5f3b235de0bd3a6e4dc771f6892a5b84410ba7c54973bfb2735a072e303",
+                Salt = "f6Mv"
+            };
+            context.PasswordByUsers.Add(passwordByUserWriter2);
+
+            #endregion
+
+            #region Edtior 1
+
+            User editor1 = new User
             {
                 Id = 3,
                 UserName = "atovar",
@@ -68,7 +103,21 @@ namespace BlogEngine.DataAccess.Initializer
             };
             context.Users.Add(editor1);
 
-            var editor2 = new User
+            // PASS: Z3moga.963
+            PasswordByUser passwordByUserEditor1 = new PasswordByUser()
+            {
+                Id = 3,
+                User = editor1,
+                Hash = "40331eb73de18b87602e67b28d4e22a7f9e449f2a446c7f1144b5d5a03d3a185",
+                Salt = "hON0"
+            };
+            context.PasswordByUsers.Add(passwordByUserEditor1);
+
+            #endregion
+
+            #region Editor 2
+
+            User editor2 = new User
             {
                 Id = 4,
                 UserName = "ozapata",
@@ -77,7 +126,20 @@ namespace BlogEngine.DataAccess.Initializer
             };
             context.Users.Add(editor2);
 
+            // PASS: Z3moga.963
+            PasswordByUser passwordByUserEditor2 = new PasswordByUser()
+            {
+                Id = 4,
+                User = editor2,
+                Hash = "40331eb73de18b87602e67b28d4e22a7f9e449f2a446c7f1144b5d5a03d3a185",
+                Salt = "hON0"
+            };
+            context.PasswordByUsers.Add(passwordByUserEditor2);
+
+            #endregion
+
             context.SaveChanges();
+
         }
 
     }

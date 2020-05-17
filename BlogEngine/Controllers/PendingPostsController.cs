@@ -24,7 +24,6 @@ namespace BlogEngine.Controllers
             ResponseViewModel response = new ResponseViewModel();
 
             var userSession = HttpContext.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
-
             Task<ResponseList<Post>> responsePendingPosts = postServices.GeAllPendingPostByUserId(userSession?.Id ?? 0);
             if (responsePendingPosts.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {

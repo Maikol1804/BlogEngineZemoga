@@ -22,17 +22,11 @@ namespace BlogEngine.Controllers
         {
             ResponseViewModel response = new ResponseViewModel();
 
-            if (user == null)
+            Response responseValidate = ValidateUserViewModel(user);
+            if (responseValidate.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
-                response.Message = "Login failed.";
-                return Json(response);
-            }
-
-            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password))
-            {
-                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
-                response.Message = "Username or password incorrect.";
+                response.Message = responseValidate.Message;
                 return Json(response);
             }
 
@@ -75,6 +69,34 @@ namespace BlogEngine.Controllers
             response.Message = "Welcome " + user.Username;
 
             return Json(response);
+        }
+
+        [HttpPost]
+        public Response ValidateUserViewModel(UserViewModel user)
+        {
+            Response response = new Response
+            {
+                State = BasicEnums.State.Error
+            };
+
+
+            if (user == null)
+            {
+                response.Message = "Login failed.";
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password))
+            {
+                response.Message = "Username or password incorrect.";
+                return response;
+            }
+
+            return new Response()
+            {
+                State = BasicEnums.State.Ok,
+                Message = "Validations passed."
+            };
         }
 
     }

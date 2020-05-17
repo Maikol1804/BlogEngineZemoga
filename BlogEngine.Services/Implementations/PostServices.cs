@@ -96,7 +96,7 @@ namespace BlogEngine.Services.Implementations
             return response;
         }
 
-        public async Task<ResponseList<Post>> GetAllGetAllWrittenPosts()
+        public async Task<ResponseList<Post>> GetAllWrittenPosts()
         {
             ResponseList<Post> response = new ResponseList<Post>();
             try
@@ -111,6 +111,25 @@ namespace BlogEngine.Services.Implementations
                 //TODO Save in log
                 response.State = BasicEnums.State.Error;
                 response.Message = "Error to get all wirtten post.";
+            }
+            return response;
+        }
+
+        public async Task<ResponseList<Post>> GetAllApprovedPosts()
+        {
+            ResponseList<Post> response = new ResponseList<Post>();
+            try
+            {
+                List<Post> posts = await postRepository.GetAll();
+                posts = posts.Where(x => x.PostStateCode == BasicEnums.PostStates.Approved.GetHashCode().ToString()).ToList();
+                response.List = posts;
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to get all approved post.";
             }
             return response;
         }

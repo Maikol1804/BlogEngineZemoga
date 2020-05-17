@@ -20,10 +20,9 @@ namespace BlogEngine.Controllers
         [HttpPost]
         public JsonResult GetAllWrittenPosts()
         {
-
             ResponseViewModel response = new ResponseViewModel();
 
-            Task<ResponseList<Post>> responseWrittenPosts = postServices.GetAllGetAllWrittenPosts();
+            Task<ResponseList<Post>> responseWrittenPosts = postServices.GetAllWrittenPosts();
             if (responseWrittenPosts.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
@@ -74,7 +73,7 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
-            responsePostService.Result.Entity.PostStateCode = BasicEnums.PostStates.Accepted.GetHashCode().ToString();
+            responsePostService.Result.Entity.PostStateCode = BasicEnums.PostStates.Approved.GetHashCode().ToString();
 
             Task<Response> responseUpdatePostService = postServices.UpdatePost(responsePostService.Result.Entity);
             if (responseUpdatePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
@@ -92,7 +91,6 @@ namespace BlogEngine.Controllers
         [HttpPost]
         public JsonResult RejectPost([FromBody]long Id)
         {
-
             ResponseViewModel response = new ResponseViewModel();
 
             Task<ResponseEntity<Post>> responsePostService = postServices.GetPostById(Id);

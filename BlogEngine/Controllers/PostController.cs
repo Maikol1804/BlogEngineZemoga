@@ -21,7 +21,7 @@ namespace BlogEngine.Controllers
         {
             ResponseViewModel response = new ResponseViewModel();
 
-            Response responseValidate = ValidatePost(post);
+            Response responseValidate = ValidatePostViewModel(post);
             if (responseValidate.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
@@ -60,7 +60,7 @@ namespace BlogEngine.Controllers
         }
 
         [HttpPost]
-        public Response ValidatePost(PostViewModel post) 
+        public Response ValidatePostViewModel(PostViewModel post) 
         {
             Response response = new Response
             {

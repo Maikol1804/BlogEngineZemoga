@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using BlogEngine.Services.Contracts;
-using BlogEngine.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogEngine.Helpers

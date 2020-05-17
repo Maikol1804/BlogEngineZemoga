@@ -25,7 +25,6 @@ namespace BlogEngine.Controllers
             ResponseViewModel response = new ResponseViewModel();
 
             var userSession = HttpContext.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
-
             Task<ResponseList<Post>> responseRejectedPosts = postServices.GeAllRejectedPostByUserId(userSession?.Id ?? 0);
             if (responseRejectedPosts.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {

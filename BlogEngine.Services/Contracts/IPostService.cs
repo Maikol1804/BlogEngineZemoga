@@ -10,7 +10,8 @@ namespace BlogEngine.Services.Contracts
         Task<Response> UpdatePost(Post post);
         Task<ResponseList<Post>> GeAllPendingPostByUserId(long id);
         Task<ResponseList<Post>> GeAllRejectedPostByUserId(long id);
-        Task<ResponseList<Post>> GetAllGetAllWrittenPosts();
+        Task<ResponseList<Post>> GetAllWrittenPosts();
+        Task<ResponseList<Post>> GetAllApprovedPosts();
         Task<ResponseEntity<Post>> GetPostById(long Id);
     }
 }

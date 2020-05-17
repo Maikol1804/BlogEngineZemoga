@@ -28,8 +28,8 @@ namespace BlogEngine.Transverse.Enumerator
         {
             [Description("Created")]
             Created = 1,
-            [Description("Accepted")]
-            Accepted = 2,
+            [Description("Approved")]
+            Approved = 2,
             [Description("Rejected")]
             Rejected = 3
         }

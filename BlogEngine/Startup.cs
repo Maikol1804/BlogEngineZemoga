@@ -11,6 +11,7 @@ using BlogEngine.Services.Implementations;
 using BlogEngine.Services.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,14 +36,18 @@ namespace BlogEngine
             services.AddControllers().AddXmlDataContractSerializerFormatters();
             services.AddScoped<IDbInitializer, DbInitializer>();
 
-            //var builder = new ContainerBuilder();
-
-            //builder.RegisterModule(new Configuration());
-
-            //builder.Populate(services);
-
-            //IContainer container = builder.Build();
-            //return container.Resolve<IServiceProvider>();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -67,6 +72,8 @@ namespace BlogEngine
 
             app.UseRouting();
 
+            app.UseSession();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -82,6 +89,7 @@ namespace BlogEngine
                 var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
                 dbInitializer.SeedData();
             }
+
 
         }
 

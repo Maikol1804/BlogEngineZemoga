@@ -61,7 +61,7 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<List<User>> GetAll()
         {
-            return await _dbset.ToListAsync();
+            return await _dbset.Include("Rol").ToListAsync();
         }
 
         public async Task<User> GetById(long id)
@@ -73,5 +73,11 @@ namespace BlogEngine.DataAccess.Implementations
         {
             return _dbset.Any(e => e.Id == id);
         }
+
+        public async Task<User> GetByUsername(string username)
+        {
+            return await _dbset.Include("Rol").FirstOrDefaultAsync(x => x.UserName.Equals(username));
+        }
+
     }
 }

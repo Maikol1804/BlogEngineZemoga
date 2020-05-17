@@ -73,5 +73,10 @@ namespace BlogEngine.DataAccess.Implementations
         {
             return _dbset.Any(e => e.Id == id);
         }
+
+        public async Task<PasswordByUser> GetByUserId(long id)
+        {
+            return await _dbset.FirstOrDefaultAsync(x => x.UserId == id);
+        }
     }
 }

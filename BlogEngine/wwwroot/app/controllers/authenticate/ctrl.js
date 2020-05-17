@@ -1,9 +1,11 @@
 ﻿app.controller('authenticateCtrl',
-    ['$scope', '$rootScope', 'baseFactory', '$timeout', function ($scope, $rootScope, baseFactory, $timeout) {
+    ['$scope', '$rootScope', 'baseFactory', '$timeout', '$window', function ($scope, $rootScope, baseFactory, $timeout, $window) {
 
         $scope.MVCController = 'Authenticate';
         $scope.Path = '../app/controllers/authenticate/';
         $scope.View = '';
+
+        $scope.User = {};
         
         this.$onInit = function () {
             $scope.View = $scope.Path + 'form.html';
@@ -11,20 +13,21 @@
 
         $scope.Methods = {
 
-            SendForApproval: function () {
+            Login: function () {
 
                 if ($scope.Validations.ValidateUser()) {
                     baseFactory.request(
                         $scope.MVCController,
-                        'SignIn',
+                        'Login',
                         $scope.User
                     ).then(function successCallback(response) {
 
                         if (response != null && response.data.code == "1") {
+
                             $scope.Alert = 'alert alert-success';
 
-
-                            //TODO ChangeLayaout
+                            $scope.ChangeContentUrl('Home');
+                            $window.location.reload();
 
                         } else {
                             $scope.Alert = 'alert alert-danger';
@@ -44,13 +47,13 @@
         $scope.Validations = {
 
             ValidateUser: function () {
-                if ($scope.User.Username == null || $scope.Post.Username == '') {
+                if ($scope.User.Username == null || $scope.User.Username == '') {
                     $scope.Message = 'Username is required.';
                     $scope.Alert = 'alert alert-danger';
                     $scope.DeleteMessage(2000);
                     return false;
                 }
-                if ($scope.Post.Password == null || $scope.Post.Password == '') {
+                if ($scope.User.Password == null || $scope.User.Password == '') {
                     $scope.Message = 'Password is required.';
                     $scope.Alert = 'alert alert-danger';
                     $scope.DeleteMessage(2000);

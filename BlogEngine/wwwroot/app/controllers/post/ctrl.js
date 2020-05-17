@@ -35,8 +35,6 @@
                         $scope.DeleteMessage(2000);
 
                     }, function errorCallback(response) {
-
-
                     });
                 }
             }

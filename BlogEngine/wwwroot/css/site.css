@@ -73,3 +73,18 @@ body {
 a:hover {
     cursor: pointer;
 }
+
+.user-info {
+    margin: 0px;
+    list-style-type: none;
+}
+
+.user-info-rol {
+    font-size: 15px;
+    font-style: oblique;
+}
+
+.logout {
+    margin-left: 10px;
+}
+

@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using BlogEngine.Helpers;
+@using BlogEngine.Transverse.Constants;
+@using BlogEngine.Transverse.Enumerator;
+@model UserLogguedInViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,12 +12,13 @@
     <title>@ViewData["Title"] - BlogEngine</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome-free-5.13.0-web/css/all.css" />
 </head>
 <body ng-app="app" ng-controller="layoutCtrl">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" ng-click="changeContentUrl('Home')">Blog Engine</a>
+                <a class="navbar-brand" ng-click="ChangeContentUrl('Home')">Blog Engine</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,34 +26,54 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         @{
-                            if (true)
+
+                            <li class="nav-item">
+                                <a class="nav-link" ng-click="ChangeContentUrl('Home')">Home</a>
+                            </li>
+
+                            var sesion = Context.Session.Get<UserLogguedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
+                            if (sesion != null && sesion.RolCode == BasicEnums.RolTypes.Writer.GetHashCode().ToString())
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" ng-click="changeContentUrl('Home')">Home</a>
+                                    <a class="nav-link" ng-click="ChangeContentUrl('Post')">Post</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" ng-click="ChangeContentUrl('PendingPosts')">Pendig Post</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" ng-click="ChangeContentUrl('RejectedPosts')">Rejected Post</a>
                                 </li>
                             }
-                            if (true)
+                            if (sesion != null && sesion.RolCode == BasicEnums.RolTypes.Editor.GetHashCode().ToString())
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" ng-click="changeContentUrl('Post')">Post</a>
-                                </li>
-                            }
-                            if (true)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" ng-click="changeContentUrl('PendingPosts')">Pendig Post</a>
-                                </li>
-                            }
-                            if (true)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" ng-click="changeContentUrl('ApprovalPosts')">Approval Post</a>
+                                    <a class="nav-link" ng-click="ChangeContentUrl('ApprovalPosts')">Approval Post</a>
                                 </li>
                             }
                         }
                     </ul>
                 </div>
-                <a class="btn btn-outline-info" ng-click="changeContentUrl('Authenticate')">Sign in</a>
+
+                @{
+                    if (sesion == null)
+                    {
+                        <a class="btn btn-outline-info" ng-click="ChangeContentUrl('Authenticate')">Login</a>
+                    }
+                    else
+                    {
+                        <ul class="user-info text-center">
+                            <li>
+                                <b>@(Context.Session.Get<UserLogguedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).FullName)</b>
+                            </li>
+                            <li class="user-info-rol">
+                                @(Context.Session.Get<UserLogguedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).RolName)
+                            </li>
+                        </ul>
+                        <div class="logout">
+                            <a ng-click="Logout()"><i class="fas fa-sign-out-alt fa-2x"></i></a>
+                        </div>
+                    }
+                }
             </div>
         </nav>
     </header>

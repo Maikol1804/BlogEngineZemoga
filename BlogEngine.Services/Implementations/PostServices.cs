@@ -12,7 +12,6 @@ namespace BlogEngine.Services.Implementations
 {
     public class PostServices : IPostService
     {
-
         private readonly IComponentContext components;
         private readonly IPost postRepository;
 
@@ -21,12 +20,6 @@ namespace BlogEngine.Services.Implementations
             this.components = components;
             postRepository = components.Resolve<IPost>();
         }
-
-        //public PostServices(BlogEngineContext _context, IPost postRepository)
-        //{
-        //    this.postRepository = postRepository;
-        //    //this.postRepository = new PostRepository(_context);
-        //}
 
         public async Task<Response> SavePost(Post post)
         {

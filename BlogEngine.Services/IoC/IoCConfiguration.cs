@@ -29,6 +29,8 @@ namespace BlogEngine.Services.IoC
         private static void RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterType<PostServices>().As<IPostService>();
+            builder.RegisterType<UserServices>().As<IUserService>();
+            builder.RegisterType<PasswordByUserServices>().As<IPasswordByUserService>();
         }
 
         private static void RegisterRepositories(ContainerBuilder builder)

@@ -23,6 +23,23 @@ namespace BlogEngine.Controllers
         {
             ResponseViewModel response = new ResponseViewModel();
 
+            if (post == null) {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error sending post to validate.";
+                return Json(response);
+            }
+            if (string.IsNullOrEmpty(post.Title)) {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Post title is required.";
+                return Json(response);
+            }
+            if (string.IsNullOrEmpty(post.Body))
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Post body is required.";
+                return Json(response);
+            }
+
             Post postEntity = new Post()
             {
                 Title = post.Title,
@@ -31,12 +48,15 @@ namespace BlogEngine.Controllers
 
             Task<Response> responseService = postServices.SavePost(postEntity);
 
-            if (responseService.Result.State.GetDescription() == BasicEnums.State.Ok.GetDescription()) 
+            if (responseService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription()) 
             {
-                response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
-                response.Message = "Post sent to validate correctly";
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error sending post to validate.";
+                return Json(response);
             }
 
+            response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
+            response.Message = "Post sent to validate correctly";
             return Json(response);
         }
 

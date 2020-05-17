@@ -31,7 +31,7 @@ namespace BlogEngine.DataAccess.Initializer
             Rol rolWriter = new Rol()
             {
                 Id = 1,
-                Code = "01",
+                Code = "1",
                 Name = "Writer"
             };
             context.Roles.Add(rolWriter);
@@ -39,7 +39,7 @@ namespace BlogEngine.DataAccess.Initializer
             Rol rolEditor = new Rol()
             {
                 Id = 2,
-                Code = "02",
+                Code = "2",
                 Name = "Editor"
             };
             context.Roles.Add(rolEditor);
@@ -61,7 +61,7 @@ namespace BlogEngine.DataAccess.Initializer
             PasswordByUser passwordByUserWriter1 = new PasswordByUser()
             {
                 Id = 1,
-                User = writer1,
+                UserId = 1,
                 Hash = "0f27e5f3b235de0bd3a6e4dc771f6892a5b84410ba7c54973bfb2735a072e303",
                 Salt = "f6Mv"
             };
@@ -84,7 +84,7 @@ namespace BlogEngine.DataAccess.Initializer
             PasswordByUser passwordByUserWriter2 = new PasswordByUser()
             {
                 Id = 2,
-                User = writer2,
+                UserId = 2,
                 Hash = "0f27e5f3b235de0bd3a6e4dc771f6892a5b84410ba7c54973bfb2735a072e303",
                 Salt = "f6Mv"
             };
@@ -107,7 +107,7 @@ namespace BlogEngine.DataAccess.Initializer
             PasswordByUser passwordByUserEditor1 = new PasswordByUser()
             {
                 Id = 3,
-                User = editor1,
+                UserId = 3,
                 Hash = "40331eb73de18b87602e67b28d4e22a7f9e449f2a446c7f1144b5d5a03d3a185",
                 Salt = "hON0"
             };
@@ -130,7 +130,7 @@ namespace BlogEngine.DataAccess.Initializer
             PasswordByUser passwordByUserEditor2 = new PasswordByUser()
             {
                 Id = 4,
-                User = editor2,
+                UserId = 4,
                 Hash = "40331eb73de18b87602e67b28d4e22a7f9e449f2a446c7f1144b5d5a03d3a185",
                 Salt = "hON0"
             };

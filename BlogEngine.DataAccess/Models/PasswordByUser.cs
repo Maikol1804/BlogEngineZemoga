@@ -7,7 +7,7 @@ namespace BlogEngine.DataAccess.Models
 {
     public class PasswordByUser : BaseModel
     {
-        public User User { get; set; }
+        public long UserId { get; set; }
         public string Hash { get; set; }
         public string Salt { get; set; }
 

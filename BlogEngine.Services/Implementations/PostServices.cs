@@ -76,7 +76,26 @@ namespace BlogEngine.Services.Implementations
             }
             return response;
         }
-        
+
+        public async Task<ResponseList<Post>> GeAllRejectedPostByUserId(long id)
+        {
+            ResponseList<Post> response = new ResponseList<Post>();
+            try
+            {
+                List<Post> posts = await postRepository.GetAll();
+                posts = posts.Where(x => x.User.Id == id && x.PostStateCode == BasicEnums.PostStates.Rejected.GetHashCode().ToString()).ToList();
+                response.List = posts;
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to get rejected post by user.";
+            }
+            return response;
+        }
+
         public async Task<ResponseList<Post>> GetAllGetAllWrittenPosts()
         {
             ResponseList<Post> response = new ResponseList<Post>();

@@ -6,18 +6,60 @@ using BlogEngine.Transverse.Constants;
 using BlogEngine.Transverse.Entities;
 using BlogEngine.Transverse.Enumerator;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace BlogEngine.Controllers
 {
-    public class PostController : BaseController
+    public class RejectedPostsController : BaseController
     {
-        public PostController(IComponentContext component) : base(component)
+        public RejectedPostsController(IComponentContext component) : base(component)
         {
         }
 
         [HttpPost]
-        public JsonResult SavePost([FromBody]PostViewModel post) 
+        public JsonResult GetAllRejectedPosts()
+        {
+
+            ResponseViewModel response = new ResponseViewModel();
+
+            var userSession = HttpContext.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
+
+            Task<ResponseList<Post>> responseRejectedPosts = postServices.GeAllRejectedPostByUserId(userSession?.Id ?? 0);
+            if (responseRejectedPosts.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error getting rejected posts.";
+                return Json(response);
+            }
+
+            List<PostViewModel> rejectedPost = new List<PostViewModel>();
+            if (responseRejectedPosts.Result.List != null)
+            {
+                foreach (var pending in responseRejectedPosts.Result.List)
+                {
+                    rejectedPost.Add(new PostViewModel()
+                    {
+                        Id = pending.Id,
+                        Title = pending.Title,
+                        Body = pending.Body,
+                        CreatedDate = pending.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-US")),
+                        CreatorFullName = pending.User.FullName
+                    });
+                }
+            }
+
+            response.Data = rejectedPost;
+            response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
+            response.Message = (rejectedPost.Count == 0 ? "You have no rejected posts." : string.Empty);
+
+            return Json(response);
+
+        }
+
+        [HttpPost]
+        public JsonResult UpdatePost([FromBody]PostViewModel post)
         {
             ResponseViewModel response = new ResponseViewModel();
 
@@ -30,7 +72,7 @@ namespace BlogEngine.Controllers
             }
 
             var userSession = HttpContext.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
-            Task<ResponseEntity<User>> responseUserService = userServices.GetUserById(userSession?.Id??0);
+            Task<ResponseEntity<User>> responseUserService = userServices.GetUserById(userSession?.Id ?? 0);
             if (responseUserService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
@@ -40,14 +82,15 @@ namespace BlogEngine.Controllers
 
             Post postEntity = new Post()
             {
+                Id = post.Id,
                 Title = post.Title,
                 Body = post.Body,
                 User = responseUserService.Result.Entity,
                 PostStateCode = BasicEnums.PostStates.Created.GetHashCode().ToString()
             };
 
-            Task<Response> responsePostService = postServices.SavePost(postEntity);
-            if (responsePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription()) 
+            Task<Response> responsePostService = postServices.UpdatePost(postEntity);
+            if (responsePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
                 response.Message = "Error sending post to check.";
@@ -60,7 +103,7 @@ namespace BlogEngine.Controllers
         }
 
         [HttpPost]
-        public Response ValidatePost(PostViewModel post) 
+        public Response ValidatePost(PostViewModel post)
         {
             Response response = new Response
             {

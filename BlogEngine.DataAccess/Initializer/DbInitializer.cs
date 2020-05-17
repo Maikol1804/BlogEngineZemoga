@@ -98,7 +98,7 @@ namespace BlogEngine.DataAccess.Initializer
             {
                 Id = 3,
                 UserName = "atovar",
-                FullName = "Andre Tovar",
+                FullName = "Andres Tovar",
                 Rol = rolEditor
             };
             context.Users.Add(editor1);

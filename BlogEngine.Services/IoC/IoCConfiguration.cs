@@ -37,7 +37,6 @@ namespace BlogEngine.Services.IoC
         {
             builder.RegisterType<PasswordByUserRepository>().As<IPasswordByUser>();
             builder.RegisterType<PostRepository>().As<IPost>();
-            builder.RegisterType<PostStateRepository>().As<IPostState>();
             builder.RegisterType<RolRepository>().As<IRol>();
             builder.RegisterType<UserRepository>().As<IUser>();
         }

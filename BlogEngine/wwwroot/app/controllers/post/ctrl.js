@@ -15,7 +15,7 @@
 
         $scope.Methods = {
 
-            SendForApproval: function () {
+            SendToApproval: function () {
 
                 if ($scope.Validations.ValidatePost()) {
                     baseFactory.request(
@@ -32,7 +32,7 @@
                         }
 
                         $scope.Message = response.data.message;
-                        $scope.DeleteMessage(2000);
+                        $scope.DeleteMessage(5000);
 
                     }, function errorCallback(response) {
                     });

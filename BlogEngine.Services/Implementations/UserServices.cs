@@ -47,5 +47,30 @@ namespace BlogEngine.Services.Implementations
             return response;
         }
 
+        public async Task<ResponseEntity<User>> GetUserById(long id)
+        {
+            ResponseEntity<User> response = new ResponseEntity<User>();
+            try
+            {
+                response.Entity = await userRepository.GetById(id);
+
+                if (response.Entity == null)
+                {
+                    response.State = Transverse.Enumerator.BasicEnums.State.Error;
+                    response.Message = "User not exist.";
+                    return response;
+                }
+
+                response.State = Transverse.Enumerator.BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = Transverse.Enumerator.BasicEnums.State.Error;
+                response.Message = "Error to get the user by username.";
+            }
+            return response;
+        }
+
     }
 }

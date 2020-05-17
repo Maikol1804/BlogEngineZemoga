@@ -21,4 +21,8 @@
     <ProjectReference Include="..\BlogEngine.Services\BlogEngine.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

@@ -7,5 +7,6 @@ namespace BlogEngine.Services.Contracts
     public interface IUserService : IService
     {
         Task<ResponseEntity<User>> GetUserByUsername(string username);
+        Task<ResponseEntity<User>> GetUserById(long id);
     }
 }

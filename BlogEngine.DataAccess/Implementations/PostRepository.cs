@@ -61,7 +61,7 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<List<Post>> GetAll()
         {
-            return await _dbset.Include("User").Include("PostState").ToListAsync();
+            return await _dbset.Include("User").ToListAsync();
         }
 
         public async Task<Post> GetById(long id)

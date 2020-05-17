@@ -8,7 +8,7 @@ namespace BlogEngine.DataAccess.Models
     public class Post : BaseModel
     {
         public User User { get; set; }
-        public PostState PostState { get; set; }
+        public string PostStateCode { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
 

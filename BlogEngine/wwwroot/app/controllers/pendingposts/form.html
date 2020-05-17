@@ -1,1 +1,46 @@
-﻿This is just a test for pending post
+﻿
+<div class="row">
+
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+
+        <h1 class="my-4">
+            Look at
+            <small>Your Pending Post</small>
+        </h1>
+
+        <!-- Blog Post -->
+        <div ng-repeat="Pending in PendigPosts" class="card mb-4">
+            <img class="card-img-top post-logo" src="img/zemoga-logo-grey.png" alt="Card image cap">
+            <div class="card-body">
+                <input type="text" id="post-title" class="form-control form-control-lg mb-4" placeholder="Title" ng-model="Pending.title" autocomplete="off" readonly>
+                <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="What's on your mind?" rows="3" ng-model="Pending.body" readonly></textarea>
+            </div>
+            <div class="card-footer text-muted">
+                Posted on {{Pending.createdDate}}
+            </div>
+        </div>
+
+        <div class="row" ng-style="{ 'display' : (Message == '') ? 'none' : '' }">
+            <div class="col-md-12">
+                <div ng-class="Alert" role="alert">{{Message}}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+
+        <!-- Side Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">Tip</h5>
+            <div class="card-body">
+                In this section you can see the posts that the <b>Editor</b> has not approved or rejected yet.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

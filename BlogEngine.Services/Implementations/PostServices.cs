@@ -5,7 +5,10 @@ using BlogEngine.DataAccess.Interfaces;
 using BlogEngine.DataAccess.Models;
 using BlogEngine.Services.Contracts;
 using BlogEngine.Transverse.Entities;
+using BlogEngine.Transverse.Enumerator;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlogEngine.Services.Implementations
@@ -27,13 +30,86 @@ namespace BlogEngine.Services.Implementations
             try
             {
                 await postRepository.Add(post);
-                response.State = Transverse.Enumerator.BasicEnums.State.Ok;
+                response.State = BasicEnums.State.Ok;
             }
             catch (Exception)
             {
                 //TODO Save in log
-                response.State = Transverse.Enumerator.BasicEnums.State.Error;
-                response.Message = "Error to save the post.";
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to save post.";
+            }
+            return response;
+        }
+
+        public async Task<Response> UpdatePost(Post post)
+        {
+            Response response = new Response();
+            try
+            {
+                await postRepository.Update(post);
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to update post.";
+            }
+            return response;
+        }
+
+        public async Task<ResponseList<Post>> GeAllPendingPostByUserId(long id)
+        {
+            ResponseList<Post> response = new ResponseList<Post>();
+            try
+            {
+                List<Post> posts = await postRepository.GetAll();
+                posts = posts.Where(x => x.User.Id == id && x.PostStateCode == BasicEnums.PostStates.Created.GetHashCode().ToString()).ToList();
+                response.List = posts;
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to get pendig post by user.";
+            }
+            return response;
+        }
+        
+        public async Task<ResponseList<Post>> GetAllGetAllWrittenPosts()
+        {
+            ResponseList<Post> response = new ResponseList<Post>();
+            try
+            {
+                List<Post> posts = await postRepository.GetAll();
+                posts = posts.Where(x => x.PostStateCode == BasicEnums.PostStates.Created.GetHashCode().ToString()).ToList();
+                response.List = posts;
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to get all wirtten post.";
+            }
+            return response;
+        }
+
+        public async Task<ResponseEntity<Post>> GetPostById(long Id)
+        {
+            ResponseEntity<Post> response = new ResponseEntity<Post>();
+            try
+            {
+                Post post = await postRepository.GetById(Id);
+                response.Entity = post;
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to get post by Id";
             }
             return response;
         }

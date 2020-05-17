@@ -2,7 +2,7 @@
 @using BlogEngine.Helpers;
 @using BlogEngine.Transverse.Constants;
 @using BlogEngine.Transverse.Enumerator;
-@model UserLogguedInViewModel
+@model UserLoggedInViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +31,8 @@
                                 <a class="nav-link" ng-click="ChangeContentUrl('Home')">Home</a>
                             </li>
 
-                            var sesion = Context.Session.Get<UserLogguedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
-                            if (sesion != null && sesion.RolCode == BasicEnums.RolTypes.Writer.GetHashCode().ToString())
+                            var userSesion = Context.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
+                            if (userSesion != null && userSesion.RolCode == BasicEnums.RolTypes.Writer.GetHashCode().ToString())
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" ng-click="ChangeContentUrl('Post')">Post</a>
@@ -44,10 +44,10 @@
                                     <a class="nav-link" ng-click="ChangeContentUrl('RejectedPosts')">Rejected Post</a>
                                 </li>
                             }
-                            if (sesion != null && sesion.RolCode == BasicEnums.RolTypes.Editor.GetHashCode().ToString())
+                            if (userSesion != null && userSesion.RolCode == BasicEnums.RolTypes.Editor.GetHashCode().ToString())
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" ng-click="ChangeContentUrl('ApprovalPosts')">Approval Post</a>
+                                    <a class="nav-link" ng-click="ChangeContentUrl('ApprovalPosts')">Check Post</a>
                                 </li>
                             }
                         }
@@ -55,7 +55,7 @@
                 </div>
 
                 @{
-                    if (sesion == null)
+                    if (userSesion == null)
                     {
                         <a class="btn btn-outline-info" ng-click="ChangeContentUrl('Authenticate')">Login</a>
                     }
@@ -63,10 +63,10 @@
                     {
                         <ul class="user-info text-center">
                             <li>
-                                <b>@(Context.Session.Get<UserLogguedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).FullName)</b>
+                                <b>@(Context.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).FullName)</b>
                             </li>
                             <li class="user-info-rol">
-                                @(Context.Session.Get<UserLogguedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).RolName)
+                                @(Context.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).RolName)
                             </li>
                         </ul>
                         <div class="logout">

@@ -24,6 +24,16 @@ namespace BlogEngine.Transverse.Enumerator
             Editor = 2
         }
 
+        public enum PostStates
+        {
+            [Description("Created")]
+            Created = 1,
+            [Description("Accepted")]
+            Accepted = 2,
+            [Description("Rejected")]
+            Rejected = 3
+        }
+
         public static string GetDescription<T>(this T e) where T : IConvertible
         {
             if (e is Enum)

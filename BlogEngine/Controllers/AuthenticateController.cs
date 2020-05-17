@@ -60,15 +60,16 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
-            UserLogguedInViewModel userLogguedInViewModel = new UserLogguedInViewModel()
+            UserLoggedInViewModel userLoggedInViewModel = new UserLoggedInViewModel()
             {
+                Id = responseUserService.Result.Entity.Id,
                 FullName = responseUserService.Result.Entity.FullName,
                 Username = responseUserService.Result.Entity.UserName,
                 RolCode = responseUserService.Result.Entity.Rol.Code,
-                RolName = responseUserService.Result.Entity.Rol.Name,
+                RolName = responseUserService.Result.Entity.Rol.Name
             };
 
-            HttpContext.Session.Set(BasicConst.USER_LOGGED_IN_KEY, userLogguedInViewModel);
+            HttpContext.Session.Set(BasicConst.USER_LOGGED_IN_KEY, userLoggedInViewModel);
 
             response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
             response.Message = "Welcome " + user.Username;

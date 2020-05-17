@@ -55,17 +55,17 @@ namespace BlogEngine.Controllers
         }
 
         [HttpPost]
-        public JsonResult ApprovePost([FromBody]long Id) {
+        public JsonResult ApprovePost([FromBody]long id) {
 
             ResponseViewModel response = new ResponseViewModel();
 
-            if (Id == 0) {
+            if (id == 0) {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
                 response.Message = "Error getting post by Id.";
                 return Json(response);
             }
 
-            Task<ResponseEntity<Post>> responsePostService = postServices.GetPostById(Id);
+            Task<ResponseEntity<Post>> responsePostService = postServices.GetPostById(id);
             if (responsePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
@@ -90,11 +90,18 @@ namespace BlogEngine.Controllers
         }
 
         [HttpPost]
-        public JsonResult RejectPost([FromBody]long Id)
+        public JsonResult RejectPost([FromBody]long id)
         {
             ResponseViewModel response = new ResponseViewModel();
 
-            Task<ResponseEntity<Post>> responsePostService = postServices.GetPostById(Id);
+            if (id == 0)
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error getting post by Id.";
+                return Json(response);
+            }
+
+            Task<ResponseEntity<Post>> responsePostService = postServices.GetPostById(id);
             if (responsePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();

@@ -83,6 +83,7 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
+            response.Message = "Post approved correctly.";
             response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
 
             return Json(response);
@@ -111,6 +112,7 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
+            response.Message = "Post rejected correctly.";
             response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
 
             return Json(response);

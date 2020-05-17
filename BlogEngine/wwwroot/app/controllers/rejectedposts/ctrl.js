@@ -50,7 +50,8 @@
                     ).then(function successCallback(response) {
 
                         if (response != null && response.data.code == "1") {
-                            
+
+                            toastr.success(response.data.message);
                             $scope.Methods.GetRejectedPosts();
 
                         } else {
@@ -69,16 +70,18 @@
         $scope.Validations = {
 
             ValidatePost: function (Post) {
+
+                $scope.DeleteMessage(2000);
                 if (Post.title == null || Post.title == '') {
                     $scope.Message = 'Post title is required.';
                     $scope.Alert = 'alert alert-danger';
-                    $scope.DeleteMessage(2000);
+                    toastr.error($scope.Message);
                     return false;
                 }
                 if (Post.body == null || Post.body == '') {
                     $scope.Message = 'Post body is required.';
                     $scope.Alert = 'alert alert-danger';
-                    $scope.DeleteMessage(2000);
+                    toastr.error($scope.Message);
                     return false;
                 }
                 return true;

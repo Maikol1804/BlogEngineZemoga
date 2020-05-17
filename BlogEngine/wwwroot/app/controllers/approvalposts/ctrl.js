@@ -49,6 +49,7 @@
 
                     if (response != null && response.data.code == "1") {
 
+                        toastr.success(response.data.message);
                         $scope.Methods.GetWrittenPosts();
 
                     } else {
@@ -71,6 +72,7 @@
 
                     if (response != null && response.data.code == "1") {
 
+                        toastr.success(response.data.message);
                         $scope.Methods.GetWrittenPosts();
 
                     } else {

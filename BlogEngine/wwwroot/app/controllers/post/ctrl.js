@@ -25,9 +25,11 @@
                     ).then(function successCallback(response) {
 
                         if (response != null && response.data.code == "1") {
+                            toastr.success(response.data.message);
                             $scope.Alert = 'alert alert-success';
                             $scope.Post = {};
                         } else {
+                            toastr.error(response.data.message);
                             $scope.Alert = 'alert alert-danger';
                         }
 
@@ -42,18 +44,20 @@
 
         $scope.Validations = {
 
-            ValidatePost: function (){
+            ValidatePost: function () {
+
+                $scope.DeleteMessage(2000);
                 if ($scope.Post.Title == null || $scope.Post.Title == '')
                 {
                     $scope.Message = 'Post title is required.';
                     $scope.Alert = 'alert alert-danger';
-                    $scope.DeleteMessage(2000);
+                    toastr.error($scope.Message);
                     return false;
                 }
                 if ($scope.Post.Body == null || $scope.Post.Body == '') {
                     $scope.Message = 'Post body is required.';
                     $scope.Alert = 'alert alert-danger';
-                    $scope.DeleteMessage(2000);
+                    toastr.error($scope.Message);
                     return false;
                 }
                 return true;

@@ -40,7 +40,7 @@
                 });
             },
 
-            SendToCheck: function (Post) {
+            UpdatePost: function (Post) {
 
                 if ($scope.Validations.ValidatePost(Post)) {
                     baseFactory.request(
@@ -64,7 +64,19 @@
                     }, function errorCallback(response) {
                     });
                 }
+            },
+
+            Edit: function (id) {
+
+                for (var i = 0; i < $scope.CreatedPosts.length; ++i) {
+                    if ($scope.CreatedPosts[i].id == id) {
+                        $scope.CreatedPosts[i].IsEditing = true;
+                        break;
+                    }
+                }
+
             }
+
         }
 
         $scope.Validations = {

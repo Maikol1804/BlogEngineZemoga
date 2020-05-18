@@ -75,7 +75,7 @@ namespace BlogEngine.Controllers
                 Title = post.Title,
                 Body = post.Body,
                 User = responseUserService.Result.Entity,
-                PostStateCode = BasicEnums.PostStates.Submited.GetHashCode().ToString()
+                PostStateCode = post.IsEditing ? BasicEnums.PostStates.Created.GetHashCode().ToString() : BasicEnums.PostStates.Submited.GetHashCode().ToString()
             };
 
             Task<Response> responsePostService = postServices.UpdatePost(postEntity);
@@ -87,7 +87,7 @@ namespace BlogEngine.Controllers
             }
 
             response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
-            response.Message = "Post sent to validate correctly";
+            response.Message = post.IsEditing ? "Post updated correctly" : "Post sent to validate correctly";
             return Json(response);
         }
 

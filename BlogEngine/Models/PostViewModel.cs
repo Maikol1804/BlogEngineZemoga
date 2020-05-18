@@ -20,6 +20,7 @@ namespace BlogEngine.Models
         public string CurrentComment { get; set; }
         public List<CommentViewModel> Comments { get; set; } 
         public string ApprovalDate { get; set; }
+        public bool IsEditing { get; set; }
 
     }
 }

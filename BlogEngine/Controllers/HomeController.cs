@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Globalization;
 using System;
+using BlogEngine.Transverse.Constants;
 
 namespace BlogEngine.Controllers
 {
@@ -37,13 +38,24 @@ namespace BlogEngine.Controllers
             {
                 foreach (var post in responseApprovedPosts.Result.List)
                 {
+                    List<CommentViewModel> comments = new List<CommentViewModel>();
+                    foreach (var comment in post.Comments) 
+                    {
+                        comments.Add(new CommentViewModel() { 
+                            Author = comment.Author,
+                            Body = comment.Body
+                        });
+                    }
+
                     writtenPost.Add(new PostViewModel()
                     {
                         Id = post.Id,
                         Title = post.Title,
                         Body = post.Body,
                         CreatedDate = post.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-US")),
-                        CreatorFullName = post.User.FullName
+                        ApprovalDate = post.ApprovalDate.ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-US")),
+                        CreatorFullName = post.User.FullName,
+                        Comments = comments
                     });
                 }
             }
@@ -54,6 +66,140 @@ namespace BlogEngine.Controllers
 
             return Json(response);
 
+        }
+
+        [HttpPost]
+        public JsonResult DeletePost([FromBody]long id)
+        {
+            ResponseViewModel response = new ResponseViewModel();
+
+            if (id == 0)
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error deleting post by Id.";
+                return Json(response);
+            }
+
+            Task<Response> responseUpdatePostService = postServices.DeletePostById(id);
+            if (responseUpdatePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error deleting post.";
+                return Json(response);
+            }
+
+            response.Message = "Post deleted correctly.";
+            response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        public JsonResult AddComment([FromBody]PostViewModel post)
+        {
+            ResponseViewModel response = new ResponseViewModel();
+
+            Response responseValidate = ValidatePostViewModel(post);
+            if (responseValidate.State.GetDescription() == BasicEnums.State.Error.GetDescription())
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = responseValidate.Message;
+                return Json(response);
+            }
+
+            Task<ResponseEntity<Post>> responsePostService = postServices.GetPostById(post.Id);
+            if (responsePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error getting post by Id.";
+                return Json(response);
+            }
+
+            var userSession = HttpContext.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
+            string authorName = BasicConst.ANONYMOUS_NAME;
+
+            if (userSession != null)
+            {
+                Task<ResponseEntity<User>> responseUserService = userServices.GetUserById(userSession?.Id ?? 0);
+                if (responseUserService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
+                {
+                    response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                    response.Message = "Error getting logged user.";
+                    return Json(response);
+                }
+                authorName = responseUserService.Result.Entity.FullName;
+            }
+
+            Comment comment = new Comment()
+            {
+                Author = authorName,
+                Body = post.CurrentComment
+            };
+
+            responsePostService.Result.Entity.Comments.Add(comment);
+
+            Task<Response> responseUpdatePostService = postServices.UpdatePost(responsePostService.Result.Entity);
+            if (responseUpdatePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error adding comment to post.";
+                return Json(response);
+            }
+
+            response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
+            response.Message = "Comment added correctly to post";
+            return Json(response);
+        }
+
+        [HttpPost]
+        public Response ValidatePostViewModel(PostViewModel post)
+        {
+            Response response = new Response
+            {
+                State = BasicEnums.State.Error
+            };
+
+            if (post == null)
+            {
+                response.Message = "Post can't be empty.";
+                return response;
+            }
+            if (string.IsNullOrEmpty(post.Title))
+            {
+                response.Message = "Post title is required.";
+                return response;
+            }
+            if (string.IsNullOrEmpty(post.Body))
+            {
+                response.Message = "Post body is required.";
+                return response;
+            }
+
+            return new Response()
+            {
+                State = BasicEnums.State.Ok,
+                Message = "Validations passed."
+            };
+        }
+
+        [HttpPost]
+        public JsonResult GetLoggedInUser()
+        {
+            ResponseViewModel response = new ResponseViewModel();
+
+            try
+            {
+                response.Data = HttpContext.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
+                response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
+            }
+            catch (Exception)
+            {
+                //TODO Save to Log
+                response.Message = "Error getting logged in user";
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+            }
+
+            return Json(response);
         }
 
         [HttpPost]

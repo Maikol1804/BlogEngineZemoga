@@ -24,7 +24,7 @@ namespace BlogEngine.Controllers
 
             ResponseViewModel response = new ResponseViewModel();
 
-            var userSession = HttpContext.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
+            var userSession = HttpContext.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
             Task<ResponseList<Post>> responseRejectedPosts = postServices.GeAllRejectedPostByUserId(userSession?.Id ?? 0);
             if (responseRejectedPosts.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
@@ -70,7 +70,7 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
-            var userSession = HttpContext.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
+            var userSession = HttpContext.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
             Task<ResponseEntity<User>> responseUserService = userServices.GetUserById(userSession?.Id ?? 0);
             if (responseUserService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {

@@ -61,12 +61,12 @@ namespace BlogEngine.DataAccess.Implementations
 
         public async Task<List<Post>> GetAll()
         {
-            return await _dbset.Include("User").ToListAsync();
+            return await _dbset.Include("User").Include("Comments").ToListAsync();
         }
 
         public async Task<Post> GetById(long id)
         {
-            return await _dbset.FindAsync(id);
+            return await _dbset.Include("Comments").FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public bool Exist(long id)

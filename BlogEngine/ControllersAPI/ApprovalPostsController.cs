@@ -66,6 +66,7 @@ namespace BlogEngineAPI.Controllers
             }
 
             responsePostService.Result.Entity.PostStateCode = BasicEnums.PostStates.Approved.GetHashCode().ToString();
+            responsePostService.Result.Entity.ApprovalDate = DateTime.Now;
 
             Task<Response> responseUpdatePostService = postServices.UpdatePost(responsePostService.Result.Entity);
             if (responseUpdatePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())

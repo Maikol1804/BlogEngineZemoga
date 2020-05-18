@@ -29,7 +29,7 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
-            var userSession = HttpContext.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
+            var userSession = HttpContext.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
             Task<ResponseEntity<User>> responseUserService = userServices.GetUserById(userSession?.Id??0);
             if (responseUserService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {

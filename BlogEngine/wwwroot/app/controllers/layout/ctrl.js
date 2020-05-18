@@ -4,6 +4,11 @@
         $scope.UsersController = 'Users';
         $scope.Path = '../app/controllers/layout/';
 
+        $scope.rolTypes = {
+            WRITER: '1',
+            EDITOR: '2'
+        }
+
         toastr.options = {
             "closeButton": true,
             "debug": false,

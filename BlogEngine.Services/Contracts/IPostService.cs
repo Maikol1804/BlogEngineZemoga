@@ -8,6 +8,7 @@ namespace BlogEngine.Services.Contracts
     {
         Task<Response> SavePost(Post post);
         Task<Response> UpdatePost(Post post);
+        Task<Response> DeletePostById(long id);
         Task<ResponseList<Post>> GeAllPendingPostByUserId(long id);
         Task<ResponseList<Post>> GeAllRejectedPostByUserId(long id);
         Task<ResponseList<Post>> GetAllWrittenPosts();

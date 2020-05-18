@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlogEngine.Models
 {
-    public class UserLoggedInViewModel
+    public class LoggedInUserViewModel
     {
         public long Id { get; set; }
         public string FullName { get; set; }

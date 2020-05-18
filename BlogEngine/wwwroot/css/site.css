@@ -93,3 +93,14 @@ a:hover {
     padding: 20px 20px 0px 20px;
 }
 
+.btn-small {
+    padding: 0px !important;
+}
+
+.a-comment {
+    background-color: #e9ecef;
+}
+
+.card-custom {
+    padding-top: 0px;
+}

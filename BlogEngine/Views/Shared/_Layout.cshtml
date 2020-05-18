@@ -2,7 +2,7 @@
 @using BlogEngine.Helpers;
 @using BlogEngine.Transverse.Constants;
 @using BlogEngine.Transverse.Enumerator;
-@model UserLoggedInViewModel
+@model LoggedInUserViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@
                                 <a class="nav-link" ng-click="ChangeContentUrl('Home')">Home</a>
                             </li>
 
-                            var userSesion = Context.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY);
+                            var userSesion = Context.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
                             if (userSesion != null && userSesion.RolCode == BasicEnums.RolTypes.Writer.GetHashCode().ToString())
                             {
                                 <li class="nav-item">
@@ -64,10 +64,10 @@
                     {
                         <ul class="user-info text-center">
                             <li>
-                                <b>@(Context.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).FullName)</b>
+                                <b>@(Context.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY).FullName)</b>
                             </li>
                             <li class="user-info-rol">
-                                @(Context.Session.Get<UserLoggedInViewModel>(BasicConst.USER_LOGGED_IN_KEY).RolName)
+                                @(Context.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY).RolName)
                             </li>
                         </ul>
                         <div class="logout">

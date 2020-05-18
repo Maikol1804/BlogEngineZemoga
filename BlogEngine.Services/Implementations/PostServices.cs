@@ -36,7 +36,7 @@ namespace BlogEngine.Services.Implementations
             {
                 //TODO Save in log
                 response.State = BasicEnums.State.Error;
-                response.Message = "Error to save post.";
+                response.Message = "Error saving post.";
             }
             return response;
         }
@@ -53,7 +53,24 @@ namespace BlogEngine.Services.Implementations
             {
                 //TODO Save in log
                 response.State = BasicEnums.State.Error;
-                response.Message = "Error to update post.";
+                response.Message = "Error updating post.";
+            }
+            return response;
+        }
+
+        public async Task<Response> DeletePostById(long id)
+        {
+            Response response = new Response();
+            try
+            {
+                await postRepository.DeleteById(id);
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error deleting post by id.";
             }
             return response;
         }

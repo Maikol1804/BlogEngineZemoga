@@ -5,6 +5,7 @@ using BlogEngine.Models;
 using BlogEngine.Transverse.Entities;
 using BlogEngine.Transverse.Enumerator;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -74,6 +75,7 @@ namespace BlogEngine.Controllers
             }
 
             responsePostService.Result.Entity.PostStateCode = BasicEnums.PostStates.Approved.GetHashCode().ToString();
+            responsePostService.Result.Entity.ApprovalDate = DateTime.Now;
 
             Task<Response> responseUpdatePostService = postServices.UpdatePost(responsePostService.Result.Entity);
             if (responseUpdatePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())

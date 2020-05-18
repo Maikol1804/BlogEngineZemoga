@@ -28,10 +28,12 @@ namespace BlogEngine.Transverse.Enumerator
         {
             [Description("Created")]
             Created = 1,
+            [Description("Submited")]
+            Submited = 2,
             [Description("Approved")]
-            Approved = 2,
+            Approved = 3,
             [Description("Rejected")]
-            Rejected = 3
+            Rejected = 4
         }
 
         public static string GetDescription<T>(this T e) where T : IConvertible

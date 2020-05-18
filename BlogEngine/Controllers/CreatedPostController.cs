@@ -5,23 +5,54 @@ using BlogEngine.Models;
 using BlogEngine.Transverse.Constants;
 using BlogEngine.Transverse.Entities;
 using BlogEngine.Transverse.Enumerator;
+using BlogEngineAPI.DTO.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlogEngine.Controllers
 {
-    public class PostController : BaseController
+    public class CreatedPostsController : BaseController
     {
-        public PostController(IComponentContext component) : base(component)
+        public CreatedPostsController(IComponentContext component) : base(component)
         {
         }
 
         [HttpPost]
-        public JsonResult SavePost([FromBody]PostViewModel post) 
+        public JsonResult GetAllCreatedPosts()
+        {
+
+            ResponseViewModel response = new ResponseViewModel();
+
+            var userSession = HttpContext.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
+            Task<ResponseList<Post>> responseRejectedPosts = postServices.GeAllCreatedPostByUserId(userSession?.Id ?? 0);
+            if (responseRejectedPosts.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
+            {
+                response.Code = BasicEnums.State.Error.GetHashCode().ToString();
+                response.Message = "Error getting created posts.";
+                return Json(response);
+            }
+
+            List<PostViewModel> createdPost = new List<PostViewModel>();
+            if (responseRejectedPosts.Result.List != null)
+            {
+                createdPost = MappersFactory.PostViewModel().ListMapView(responseRejectedPosts.Result.List);
+            }
+
+            response.Data = createdPost;
+            response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
+            response.Message = (createdPost.Count == 0 ? "You have no created posts." : string.Empty);
+
+            return Json(response);
+
+        }
+
+        [HttpPost]
+        public JsonResult UpdatePost([FromBody]PostViewModel post)
         {
             ResponseViewModel response = new ResponseViewModel();
 
-            Response responseValidate = ValidatePostViewModel(post);
+            Response responseValidate = ValidatePost(post);
             if (responseValidate.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
@@ -30,7 +61,7 @@ namespace BlogEngine.Controllers
             }
 
             var userSession = HttpContext.Session.Get<LoggedInUserViewModel>(BasicConst.LOGGED_IN_USER_KEY);
-            Task<ResponseEntity<User>> responseUserService = userServices.GetUserById(userSession?.Id??0);
+            Task<ResponseEntity<User>> responseUserService = userServices.GetUserById(userSession?.Id ?? 0);
             if (responseUserService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
@@ -40,27 +71,28 @@ namespace BlogEngine.Controllers
 
             Post postEntity = new Post()
             {
+                Id = post.Id,
                 Title = post.Title,
                 Body = post.Body,
                 User = responseUserService.Result.Entity,
-                PostStateCode = BasicEnums.PostStates.Created.GetHashCode().ToString()
+                PostStateCode = BasicEnums.PostStates.Submited.GetHashCode().ToString()
             };
 
-            Task<Response> responsePostService = postServices.SavePost(postEntity);
-            if (responsePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription()) 
+            Task<Response> responsePostService = postServices.UpdatePost(postEntity);
+            if (responsePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())
             {
                 response.Code = BasicEnums.State.Error.GetHashCode().ToString();
-                response.Message = "Error creting post.";
+                response.Message = "Error sending post to check.";
                 return Json(response);
             }
 
             response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
-            response.Message = "Post created correctly";
+            response.Message = "Post sent to validate correctly";
             return Json(response);
         }
 
         [HttpPost]
-        public Response ValidatePostViewModel(PostViewModel post) 
+        public Response ValidatePost(PostViewModel post)
         {
             Response response = new Response
             {

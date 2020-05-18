@@ -8,7 +8,6 @@ using BlogEngine.Transverse.Enumerator;
 using BlogEngineAPI.DTO.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace BlogEngine.Controllers
@@ -76,7 +75,7 @@ namespace BlogEngine.Controllers
                 Title = post.Title,
                 Body = post.Body,
                 User = responseUserService.Result.Entity,
-                PostStateCode = BasicEnums.PostStates.Created.GetHashCode().ToString()
+                PostStateCode = BasicEnums.PostStates.Submited.GetHashCode().ToString()
             };
 
             Task<Response> responsePostService = postServices.UpdatePost(postEntity);

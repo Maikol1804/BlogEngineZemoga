@@ -11,6 +11,7 @@ namespace BlogEngine.Services.Contracts
         Task<Response> DeletePostById(long id);
         Task<ResponseList<Post>> GeAllPendingPostByUserId(long id);
         Task<ResponseList<Post>> GeAllRejectedPostByUserId(long id);
+        Task<ResponseList<Post>> GeAllCreatedPostByUserId(long id);
         Task<ResponseList<Post>> GetAllWrittenPosts();
         Task<ResponseList<Post>> GetAllApprovedPosts();
         Task<ResponseEntity<Post>> GetPostById(long Id);

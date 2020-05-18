@@ -15,7 +15,7 @@
 
         $scope.Methods = {
 
-            SendToCheck: function () {
+            SavePost: function () {
 
                 if ($scope.Validations.ValidatePost()) {
                     baseFactory.request(

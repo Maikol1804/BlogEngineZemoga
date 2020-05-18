@@ -81,7 +81,7 @@ namespace BlogEngine.Services.Implementations
             try
             {
                 List<Post> posts = await postRepository.GetAll();
-                posts = posts.Where(x => x.User.Id == id && x.PostStateCode == BasicEnums.PostStates.Created.GetHashCode().ToString()).ToList();
+                posts = posts.Where(x => x.User.Id == id && x.PostStateCode == BasicEnums.PostStates.Submited.GetHashCode().ToString()).ToList();
                 response.List = posts;
                 response.State = BasicEnums.State.Ok;
             }
@@ -113,13 +113,32 @@ namespace BlogEngine.Services.Implementations
             return response;
         }
 
+        public async Task<ResponseList<Post>> GeAllCreatedPostByUserId(long id)
+        {
+            ResponseList<Post> response = new ResponseList<Post>();
+            try
+            {
+                List<Post> posts = await postRepository.GetAll();
+                posts = posts.Where(x => x.User.Id == id && x.PostStateCode == BasicEnums.PostStates.Created.GetHashCode().ToString()).ToList();
+                response.List = posts;
+                response.State = BasicEnums.State.Ok;
+            }
+            catch (Exception)
+            {
+                //TODO Save in log
+                response.State = BasicEnums.State.Error;
+                response.Message = "Error to get created post by user.";
+            }
+            return response;
+        }
+
         public async Task<ResponseList<Post>> GetAllWrittenPosts()
         {
             ResponseList<Post> response = new ResponseList<Post>();
             try
             {
                 List<Post> posts = await postRepository.GetAll();
-                posts = posts.Where(x => x.PostStateCode == BasicEnums.PostStates.Created.GetHashCode().ToString()).ToList();
+                posts = posts.Where(x => x.PostStateCode == BasicEnums.PostStates.Submited.GetHashCode().ToString()).ToList();
                 response.List = posts;
                 response.State = BasicEnums.State.Ok;
             }

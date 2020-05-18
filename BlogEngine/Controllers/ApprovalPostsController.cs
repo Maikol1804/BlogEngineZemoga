@@ -4,6 +4,7 @@ using BlogEngine.Helpers;
 using BlogEngine.Models;
 using BlogEngine.Transverse.Entities;
 using BlogEngine.Transverse.Enumerator;
+using BlogEngineAPI.DTO.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -34,17 +35,7 @@ namespace BlogEngine.Controllers
             List<PostViewModel> writtenPost = new List<PostViewModel>();
             if (responseWrittenPosts.Result.List != null)
             {
-                foreach (var post in responseWrittenPosts.Result.List)
-                {
-                    writtenPost.Add(new PostViewModel()
-                    {
-                        Id = post.Id,
-                        Title = post.Title,
-                        Body = post.Body,
-                        CreatedDate = post.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-US")),
-                        CreatorFullName = post.User.FullName
-                    });
-                }
+                writtenPost = MappersFactory.PostViewModel().ListMapView(responseWrittenPosts.Result.List);
             }
 
             response.Data = writtenPost;

@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace BlogEngineAPI.DTO.Mappers
 {
-    public class PostMapper : Mapper<Post, PostDTO>
+    public class PostDTOMapper : Mapper<Post, PostDTO>
     {
         public override PostDTO Map(Post objectToMap)
         {
@@ -29,6 +29,11 @@ namespace BlogEngineAPI.DTO.Mappers
             }
 
             return objectsList;
+        }
+
+        public override List<PostDTO> ListMapView(IEnumerable<Post> objectsToMap)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

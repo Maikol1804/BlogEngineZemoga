@@ -6,5 +6,6 @@ namespace BlogEngineAPI.DTO.Mappers
     {
         D Map(O objectToMap);
         ActionResult<IEnumerable<D>> ListMap(IEnumerable<O> objectsToMap);
+        List<D> ListMapView(IEnumerable<O> objectsToMap);
     }
 }

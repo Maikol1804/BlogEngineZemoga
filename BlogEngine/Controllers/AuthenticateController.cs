@@ -5,6 +5,7 @@ using BlogEngine.Models;
 using BlogEngine.Transverse.Constants;
 using BlogEngine.Transverse.Entities;
 using BlogEngine.Transverse.Enumerator;
+using BlogEngineAPI.DTO.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -54,15 +55,7 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
-            LoggedInUserViewModel loggedInUserViewModel = new LoggedInUserViewModel()
-            {
-                Id = responseUserService.Result.Entity.Id,
-                FullName = responseUserService.Result.Entity.FullName,
-                Username = responseUserService.Result.Entity.UserName,
-                RolCode = responseUserService.Result.Entity.Rol.Code,
-                RolName = responseUserService.Result.Entity.Rol.Name
-            };
-
+            LoggedInUserViewModel loggedInUserViewModel = MappersFactory.LoggedInUserViewModel().Map(responseUserService.Result.Entity);
             HttpContext.Session.Set(BasicConst.LOGGED_IN_USER_KEY, loggedInUserViewModel);
 
             response.Code = BasicEnums.State.Ok.GetHashCode().ToString();

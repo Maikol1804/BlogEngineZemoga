@@ -7,6 +7,6 @@ namespace BlogEngineAPI.DTO.Mappers
     {
         public abstract D Map(O objectToMap);
         public abstract ActionResult<IEnumerable<D>> ListMap(IEnumerable<O> objectsToMap);
-
+        public abstract List<D> ListMapView(IEnumerable<O> objectsToMap);
     }
 }

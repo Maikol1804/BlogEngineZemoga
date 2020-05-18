@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System;
 using BlogEngine.Transverse.Constants;
+using BlogEngineAPI.DTO.Mappers;
 
 namespace BlogEngine.Controllers
 {
@@ -33,36 +34,15 @@ namespace BlogEngine.Controllers
                 return Json(response);
             }
 
-            List<PostViewModel> writtenPost = new List<PostViewModel>();
+            List<PostViewModel> approvedPost = new List<PostViewModel>();
             if (responseApprovedPosts.Result.List != null)
             {
-                foreach (var post in responseApprovedPosts.Result.List)
-                {
-                    List<CommentViewModel> comments = new List<CommentViewModel>();
-                    foreach (var comment in post.Comments) 
-                    {
-                        comments.Add(new CommentViewModel() { 
-                            Author = comment.Author,
-                            Body = comment.Body
-                        });
-                    }
-
-                    writtenPost.Add(new PostViewModel()
-                    {
-                        Id = post.Id,
-                        Title = post.Title,
-                        Body = post.Body,
-                        CreatedDate = post.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-US")),
-                        ApprovalDate = post.ApprovalDate.ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-US")),
-                        CreatorFullName = post.User.FullName,
-                        Comments = comments
-                    });
-                }
+                approvedPost = MappersFactory.PostViewModel().ListMapView(responseApprovedPosts.Result.List);
             }
 
-            response.Data = writtenPost;
+            response.Data = approvedPost;
             response.Code = BasicEnums.State.Ok.GetHashCode().ToString();
-            response.Message = (writtenPost.Count == 0 ? "No one has written a post yet." : string.Empty);
+            response.Message = (approvedPost.Count == 0 ? "No one has written a post yet." : string.Empty);
 
             return Json(response);
 
@@ -130,13 +110,11 @@ namespace BlogEngine.Controllers
                 authorName = responseUserService.Result.Entity.FullName;
             }
 
-            Comment comment = new Comment()
+            responsePostService.Result.Entity.Comments.Add(new Comment()
             {
                 Author = authorName,
                 Body = post.CurrentComment
-            };
-
-            responsePostService.Result.Entity.Comments.Add(comment);
+            });
 
             Task<Response> responseUpdatePostService = postServices.UpdatePost(responsePostService.Result.Entity);
             if (responseUpdatePostService.Result.State.GetDescription() == BasicEnums.State.Error.GetDescription())

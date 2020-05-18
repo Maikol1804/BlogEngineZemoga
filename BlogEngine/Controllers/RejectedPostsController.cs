@@ -5,6 +5,7 @@ using BlogEngine.Models;
 using BlogEngine.Transverse.Constants;
 using BlogEngine.Transverse.Entities;
 using BlogEngine.Transverse.Enumerator;
+using BlogEngineAPI.DTO.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Globalization;
@@ -36,17 +37,7 @@ namespace BlogEngine.Controllers
             List<PostViewModel> rejectedPost = new List<PostViewModel>();
             if (responseRejectedPosts.Result.List != null)
             {
-                foreach (var pending in responseRejectedPosts.Result.List)
-                {
-                    rejectedPost.Add(new PostViewModel()
-                    {
-                        Id = pending.Id,
-                        Title = pending.Title,
-                        Body = pending.Body,
-                        CreatedDate = pending.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm", new CultureInfo("en-US")),
-                        CreatorFullName = pending.User.FullName
-                    });
-                }
+                rejectedPost = MappersFactory.PostViewModel().ListMapView(responseRejectedPosts.Result.List);
             }
 
             response.Data = rejectedPost;

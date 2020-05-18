@@ -12,7 +12,7 @@ This application was implemented using different clean code principles including
 
 ## Prerequisities
 
-These are the prerequisites for the application to run:
+These are the prerequisites for run the application:
 
 * Visual Studio 2019
 * .Net Core 3.1
@@ -25,7 +25,7 @@ An in-memory database was used so it is not necessary to have a database engine 
 2. Open `BlogEngine.sln` file
 3. Run using `IIS Express`
 
-Additionally, the app is deployed in azure at the following [link](https://blogenginezemoga.azurewebsites.net/) 
+Additionally, the app is deployed in `azure` at the following [link](https://blogenginezemoga.azurewebsites.net/) 
 
 ## Credentials
 
